@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int integerBreak(int n) { 
+         if( n == 2 ) return 1 ;
+         if(n == 3 ) return 2 ; 
+         if(n ==4 ) return 4 ;
+          if( n > 7) {
+            int times = n /3 ;
+            int rem = n%3 ;
+            if ( rem == 2  ){
+                return pow(3 , times) * 2 ;
+
+            }
+            if( rem == 0 ){
+                return pow(3 , times) ;
+            }
+            if( rem == 1 ){
+                return pow(3 , times-1) * 4 ; 
+            }
+
+   }
+         
+        return  3*(n-3);
+    }
+};
