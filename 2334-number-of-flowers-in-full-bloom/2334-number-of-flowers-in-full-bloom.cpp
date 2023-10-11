@@ -9,9 +9,7 @@ public:
         vector<int> res;
         for (int t : persons) {
             int started = upper_bound(start.begin(), start.end(), t) - start.begin();
-            cout<<started;
             int ended = lower_bound(end.begin(), end.end(), t) - end.begin();
-            cout<<ended<<endl;
             res.push_back(started - ended);
         }
         return res;
