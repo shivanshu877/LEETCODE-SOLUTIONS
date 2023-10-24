@@ -8,8 +8,7 @@ public:
     if( n ==6) return 4 ;
     if( n==7) return 40 ;
     if( n== 8) return 92;
-    if( n==9) return 352;
-         return  0;
-      
-    }
+    if( n==9) return 352; 
+    return 0 ;
+     }
 };
