@@ -7,7 +7,6 @@ public:
         for( int right = 0 ;  right < nums.size() ; right++) {
             ans[nums[right]]++;
                 if(ans[nums[right]] > k) {
-                    cout << " " << ans[nums[right]] << " " << right  << " " ;
                     while(nums[left]!= nums[right] && left < right){ 
                     ans[nums[left]]--;
                     if(ans[nums[left]] <= 0)ans.erase(nums[left]);
