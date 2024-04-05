@@ -7,7 +7,7 @@ public:
         while(j<nums.size()){
             sum|=nums[j];
             for(int z = 0;z<32;z++){
-                if((1<<z) & nums[j])
+                 if((1<<z) & nums[j])
                     bits[z]++;
             }
             j++;
@@ -18,7 +18,7 @@ public:
                     {
                         bits[z]--;
                         if(bits[z]==0)
-                            sum-=(1<<z);
+                            sum^=(1<<z);
                     }
                 }
                 i++;
