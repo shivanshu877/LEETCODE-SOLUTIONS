@@ -1,48 +1,60 @@
-class Solution
-{
-    public:
+#include<bits/stdc++.h>
+class Solution {
+public:
+    
+     bool isSafe1(int row, int col, vector < string > board, int n) {
+      // check upper element
+      int duprow = row;
+      int dupcol = col;
 
-        void solve(int col, vector<string> &board, vector<vector< string >> &ans, int n, vector< int >& lr, vector< int >& ud, vector< int >& ld)
-        {
-            if (col == n)
-            {
-                ans.push_back(board);
-                return;
-            }
+      while (row >= 0 && col >= 0) {
+        if (board[row][col] == 'Q')
+          return false;
+        row--;
+        col--;
+      }
 
-            for (int row = 0; row < n; row++)
-            {
-                if ( lr[row] == 0 && ld[row + col] == 0 && ud[n - 1 + col - row] == 0
-               )
-                {
-                    board[row][col] = 'Q';
-                    lr[row] = 1;
-                    ld[row + col] = 1;
-                    ud[n - 1 + col - row] = 1;
-                    solve(col + 1, board, ans, n, lr, ud, ld);
-                    board[row][col] = '.';
-                    lr[row] = 0;
-                    ld[row + col] = 0;
-                    ud[n - 1 + col - row] = 0;
+      col = dupcol;
+      row = duprow;
+      while (col >= 0) {
+        if (board[row][col] == 'Q')
+          return false;
+        col--;
+      }
 
-                    board[row][col] = '.';
-                }
-            }
+      row = duprow;
+      col = dupcol;
+      while (row < n && col >= 0) {
+        if (board[row][col] == 'Q')
+          return false;
+        row++;
+        col--;
+      }
+      return true;
+    }
+
+    void f(int n , int idx , vector<string>& ans ,    vector<vector<string>>& a) {
+        if(idx == n ){
+        a.push_back(ans);
+            return  ;
         }
-
-    vector<vector < string>> solveNQueens(int n)
-    {
-        string x = "";
-        for (int j = 0; j < n; j++)
-        {
-            x += '.';
+        for(int i = 0 ; i < n ;i++) {
+            if (isSafe1(i, idx, ans, n)) {
+          ans[i][idx] = 'Q';
+          f(n,  idx+1, ans,a);
+          ans[i][idx] = '.';
         }
-        vector<string> board(n, x);
-        vector<vector < string>> ans;
-        vector<int> lr(n, 0);
-        vector<int> ud(2 *n - 1, 0);
-        vector<int> ld(2 *n - 1, 0);
-        solve(0, board, ans, n, lr, ud, ld);
-        return ans;
+        }
+    }
+    
+    
+    vector<vector<string>> solveNQueens(int n) {
+            vector<vector<string>> a;
+
+         vector<string> ans (n  );
+        string s (n , '.');
+        for(int i = 0 ; i < n ;i++)ans[i] = s;
+        f(n, 0 , ans ,a) ;
+        return a; 
     }
 };
