@@ -1,26 +1,23 @@
 class Solution {
 public:
-    
-    int f (vector<int> & nums , int  k) {
+    int f(vector<int> nums , int  k ) {
+        unordered_map<int , int>  m;
+        int left  =0 ;
+        int ans = 0 ;
         int n = nums.size() ;
-        unordered_map<int, int> store ;
-        int ans = 0 ; 
-        for(int right = 0 , left = 0  ; right < n ; right++ ){
-            store[nums[right]]++ ;
-            while(store.size() > k) {
-                store[nums[left]]--;
-                if(store[nums[left]] == 0) store.erase(nums[left]) ;
+        for(int right = 0 ; right < n ;right++){
+            m[nums[right]]++;
+            while( m.size() > k){
+                m[nums[left]]--;
+                if(m[nums[left]] == 0)m.erase(nums[left]) ;
                 left++;
             }
-            ans += right - left + 1  ;
+            ans += right -left+1 ;
         }
         return ans;
     }
+    
     int subarraysWithKDistinct(vector<int>& nums, int k) {
-        int n = nums.size() ;
-        int ans = 0  ;
-        ans += f(nums , k ) ;
-        ans -= f(nums , k -1) ;
-        return ans  ;
+        return f(nums , k) - f(nums, k-1) ;
     }
 };
