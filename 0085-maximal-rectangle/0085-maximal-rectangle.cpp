@@ -1,52 +1,56 @@
 class Solution {
 public:
-    int f(vector<int> nums , int n){
-        vector<int>left (n , -1);
-        vector<int> right(n , -1);
-        stack<int> st ; 
-        int ans = 0 ;
-        for(int i = 0 ; i < n ; i++) {
-            while(!st.empty() && nums[st.top()] >= nums[i] )
-               st.pop();
-             if(st.empty())left[i] = 0;
-            else left[i] = st.top() +1 ;
+     int f ( vector<int> nums  ){
+        int n = nums.size() ;
+        vector<int> left (n) ;
+        vector<int> right(n) ;
+        stack<int>  st ;
+        for( int i=0 ; i < n ;i++) {
+            while(!st.empty() && nums[st.top()] >= nums[i] )st.pop() ;
+            if(st.empty()) left[i] =  0;
+           else left[i]  = st.top()+1 ;
             st.push(i);
         }
-        while(!st.empty())st.pop();
-         for(int i = n-1 ; i >=0  ; i--) {
-            while(!st.empty() && nums[st.top()] >= nums[i] )
-               st.pop();
-             if(st.empty())right[i] = n-1;
-            else right[i] = st.top()  - 1 ;
-            st.push(i);
+        stack<int>  st1 ;
+        for( int i = n-1 ; i >=  0 ;i--) {
+            while(!st1.empty() && nums[st1.top()] >= nums[i] )st1.pop() ;
+            if(st1.empty()) right[i] = n -1;
+           else  right[i]  = st1.top() -1  ;
+            st1.push(i);
         }
-        for( int i = 0 ; i < n ; i++){
-            ans = max( ans , (nums[i] * (right[i] -left[i] +1)));
+        int ans = 0;
+      
+        for( int i = 0 ; i< n ; i++) {
+            ans = max( ans , nums[i] * (right[i] - left[i]   +   1 ));    
         }
-        return ans ;   
+        return ans ;     
     }
+    
     int maximalRectangle(vector<vector<char>>& matrix) {
-                int m = matrix.size() ;
+       int m = matrix.size();
+        if (m == 0) return 0;
         int n = matrix[0].size();
-       
- 
-        vector<vector<int>> ans( m , vector<int>(n ,  0)) ;
-         for( int i = 0 ; i < m ; i++) {
-        for(int  j =  0 ; j < n ; j++) {
-                ans[i][j] =  matrix[i][j] -'0' ;                  
-       }
+        
+        // Create and initialize the ma vector
+        vector<vector<int>> ma(m, vector<int>(n, 0));
+        
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if (i == 0)
+                    ma[i][j] = matrix[i][j] - '0';
+                else if (ma[i - 1][j] > 0 && matrix[i][j] > '0')
+                    ma[i][j] = ma[i - 1][j]  + matrix[i][j] - '0';
+                else
+                    ma[i][j] = matrix[i][j] - '0';
+            }
         }
-         for( int i = 1 ; i < m ; i++) {
-        for(int  j =  0 ; j < n ; j++) {
-              if(ans[i-1][j] > 0 && ans[i][j]  > 0 )ans[i][j] = 1 + ans[i-1][j]  ;
-         cout << ans[i][j] <<" " ;  
+        
+    
+        int ans = 0 ;
+        for(auto it: ma) {
+          int temp =  f(it) ;
+           ans = max(ans , temp) ;
         }
-            cout<< endl;
-        }
-        int a  = 0 ;
-        for(auto it : ans) {
-        a= max(a , f(it , n));
-        }
-        return a;
+        return ans; // Placeholder return value
     }
 };
