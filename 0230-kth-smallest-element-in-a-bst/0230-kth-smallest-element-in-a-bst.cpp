@@ -7,8 +7,9 @@ public:
         if(!root) return ;
         f(root->left ,  k) ;
         x++;
-        if(k == x )  temp = root->val  ;
-        f(root->right , k) ;
+        if(k == x ) { temp = root->val  ;
+                    return ;
+                    }f(root->right , k) ;
     }
     int kthSmallest(TreeNode* root, int k) {
         f(root , k) ;
