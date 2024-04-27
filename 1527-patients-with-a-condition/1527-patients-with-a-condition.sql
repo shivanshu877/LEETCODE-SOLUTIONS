@@ -1,1 +1,1 @@
-select * from Patients where conditions LIKE '% DIAB1%' OR  conditions LIKE   'DIAB1%'
+SELECT * FROM Patients WHERE conditions REGEXP '^(DIAB1|.*\\sDIAB1)';
