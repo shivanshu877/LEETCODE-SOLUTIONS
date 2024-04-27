@@ -1,37 +1,38 @@
 class Solution {
 public:
-    vector<int> findOrder(int V, vector<vector<int>>& prerequisites) {
-        vector<int> adj[V];
-        for(auto it : prerequisites){
-            adj[it[0]].push_back(it[1]);
+    bool dfs(int node, vector<vector<int>>& adj, vector<int>& vis,
+             vector<int>& path , vector<int>& result  ) {
+        vis[node] = 1;
+        path[node] = 1;
+        for (auto x : adj[node]) {
+            if (!vis[x]) {
+                if (dfs(x, adj, vis, path , result) == false)
+                    return false;
+            } else if (path[x]) {
+                return false;
+            }
+        }
+        path[node] = 0;
+        result.push_back(node) ;
+        return true;
+    }
+
+    vector<int> findOrder(int n, vector<vector<int>>& p) {
+        vector<int> vis(n, 0);
+        vector<int> path(n, 0);
+        vector<int> answer ;
+        vector<vector<int>> adj(n);
+        for (int i = 0; i < p.size(); i++) {
+            adj[p[i][0]].push_back(p[i][1]);
+        }
+        for (int i = 0; i < n; i++) {
+            if (!vis[i]) {
+                if (!dfs(i, adj, vis, path , answer)) {
+                    return {};
+                }
+            }
         }
 
-        vector<int> indegree(V, 0);
-          for(int i=0; i<V; i++){
-              for(auto it: adj[i]){
-                  indegree[it]++;
-              }
-          }
-         
-          queue<int>q;
-          for(int i=0; i<V; i++){
-              if(indegree[i] == 0) q.push(i);
-          }
-         
-          vector<int> topo;
-          while(!q.empty()){
-              int node = q.front();
-              q.pop();
-              topo.push_back(node);
-             
-              for(auto it: adj[node]){
-                  indegree[it]--;
-                  if(indegree[it] == 0) q.push(it);
-              }
-          }
-          
-          reverse(topo.begin(), topo.end());
-          if(topo.size() == V) return topo;
-          return {};
+        return answer;
     }
 };
