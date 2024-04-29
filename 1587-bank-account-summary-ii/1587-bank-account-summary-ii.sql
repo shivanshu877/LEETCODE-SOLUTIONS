@@ -1,0 +1,1 @@
+select name , sum(amount) as balance from Users u inner join Transactions t using(account) group by account having sum(amount) >10000
