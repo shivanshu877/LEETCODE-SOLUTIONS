@@ -4,8 +4,7 @@ public:
         sort(people.begin() , people.end() );
         int left = 0 ;
         int right = people.size() -1;
-        int count = 0 ;
-     
+        int count = 0 ;    
         while(left <= right) {
             if(left == right){
                 count++;
@@ -14,20 +13,15 @@ public:
             if(people[left] + people[right] <= limit){
                 count++;
                 left++;
-                right--;
-                cout << left << " " << right<< " "  << endl; 
+                right--;           
             } 
             else if(people[right] <= limit){
                 count++;
-                right--;
-                cout << "right" << " " << right<< " "  << endl; 
-                
+                right--;        
             }
             else {
                 count++;
-                left++;
-                 cout << "left" << " " << right<< " "  << endl; 
-               
+                left++;    
             }
             
         }
