@@ -1,44 +1,36 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
     ListNode* removeNodes(ListNode* head) {
-       
-       
-        if(!head) return nullptr  ;
-        stack<ListNode*> st ;
-        while(head){
-            int t = head->val;
-            while(!st.empty()  && st.top()->val < t )st.pop();
-            st.push(head);
-            head = head->next;
+        if (!head)
+            return nullptr;
+
+        stack<ListNode*> st;
+        ListNode* curr = head;
+        ListNode* nextNode;
+
+        // Traverse the list
+        while (curr) {
+            nextNode = curr->next; // Store the next node before modifying the current node
+            curr->next = nullptr; // Disconnect the current node from the rest of the list
+
+            // Remove nodes with smaller values from the stack
+            while (!st.empty() && st.top()->val < curr->val) {
+                st.pop();
+            }
+
+            st.push(curr); // Push the current node onto the stack
+
+            curr = nextNode; // Move to the next node
         }
-        if(st.empty())return nullptr;
-       ListNode * temp = st.top();
-       st.pop();
-       ListNode * temp1 =  temp; 
-        while(!st.empty()){
-            temp->next = st.top();
-            temp = temp->next ;
+
+        ListNode* newHead = nullptr;
+        while (!st.empty()) {
+            curr = st.top();
             st.pop();
+            curr->next = newHead; 
+            newHead = curr;
         }
-        temp->next =  nullptr;
-        ListNode * prev = nullptr ;
-        ListNode * curr  = temp1;
-        while(curr){
-          auto nxt =  curr->next ;
-          curr->next = prev;
-            prev = curr;
-            curr = nxt ;
-        }
-        return prev;
+
+        return newHead;
     }
 };
