@@ -1,38 +1,37 @@
 class Solution {
 public:
     ListNode* doubleIt(ListNode* head) {
-      auto it = head;
-        ListNode*  prev = nullptr;
-      while(it) {
-          auto temp =  it->next ;
-          it->next =  prev; 
-          prev = it ;
-          it = temp;
-      }
-      auto t = prev; 
-       int carry = 0 ;
-        while(prev) {
-          auto v  = ( prev->val * 2  +  (carry )) %10  ;
-            carry = ( prev->val * 2  +  (carry ))  / 10 ;
-          prev->val = v ;
-        if( prev->next == nullptr) {
-             if(carry){
-            ListNode* n = new ListNode(carry);   
-               n->next =  nullptr;
-                 prev->next =  n;
-             }
-         break;    
+        ListNode* curr = head;
+        ListNode* prev = nullptr;
+
+        // Traverse the linked list
+        while (curr != nullptr) {
+            int twiceOfVal = curr->val * 2;
+
+            // If the doubled value is less than 10
+            if (twiceOfVal < 10) {
+                curr->val = twiceOfVal;
+            } 
+
+            // If doubled value is 10 or greater
+            else if (prev != nullptr) { // other than first node
+                // Update current node's value with units digit of the doubled value
+                curr->val = twiceOfVal % 10;
+                // Add the carry to the previous node's value
+                prev->val = prev->val + 1;
+            } 
+            // If it's the first node and doubled value is 10 or greater
+            else { // first node
+                // Create a new node with carry as value and link it to the current node
+                head = new ListNode(1, curr);
+                // Update current node's value with units digit of the doubled value
+                curr->val = twiceOfVal % 10;
+            }
+
+            // Update prev and curr pointers
+            prev = curr;
+            curr = curr->next;
         }
-            prev= prev->next ;
-      }
-            ListNode*  prev2 = nullptr;
-      while(t) {
-          auto temp =  t->next ;
-          t->next =  prev2; 
-          prev2 = t ;
-          t = temp;
-      }
-       return prev2 ;
-        
+        return head;
     }
 };
