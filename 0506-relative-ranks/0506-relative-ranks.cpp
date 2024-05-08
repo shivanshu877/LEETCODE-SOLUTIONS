@@ -1,48 +1,39 @@
 class Solution {
+private:
+    int findMax(vector<int>& score) {
+        int maxScore = 0;
+        for (int s : score) {
+            if (s > maxScore) {
+                maxScore = s;
+            }
+        }
+        return maxScore;
+    }
 public:
     vector<string> findRelativeRanks(vector<int>& score) {
-        map<int , string , greater<int>> a ;
-        for(auto it : score) {
-            a[it] = " ";
+        int N = score.size();
+        int M = findMax(score);
+        vector<int> scoreToIndex(M + 1, 0);
+        for (int i = 0; i < N; i++) {
+            scoreToIndex[score[i]] = i + 1;
         }
-        int n = score.size();
-        int i = 1;
-        for(auto& it  : a ){
-            
-           if( i ==  1) it.second = "Gold Medal";
-           else if( i == 2) it.second = "Silver Medal";
-           else  if( i == 3) it.second = "Bronze Medal";
-           else it.second = to_string(i);
-            i++;
+
+        const vector<string> MEDALS = {"Gold Medal", "Silver Medal", "Bronze Medal"};
+
+        // Assign ranks to athletes
+        vector<string> rank(N);
+        int place = 1;
+        for (int i = M; i >= 0; i--) {
+            if (scoreToIndex[i] != 0) {
+                int originalIndex = scoreToIndex[i] - 1;
+                if (place < 4) {
+                    rank[originalIndex] = MEDALS[place - 1];
+                } else {
+                    rank[originalIndex] = to_string(place);
+                }
+                place++;
+            }
         }
-        vector<string> ans;
-        for(int it : score ){
-            
-            ans.push_back(a[it]);
-        }
-        return ans;
+        return rank;
     }
 };
-// class Solution {
-// public:
-//     vector<string> findRelativeRanks(vector<int>& score) {
-//         map<int, string> a;
-//         for(auto it : score) {
-//             a[it] = " ";
-//         }
-//         int n = score.size();
-//         int i = n;
-//         for(auto it = a.rbegin(); it != a.rend(); ++it) {
-//             if(i == n) it->second = "Gold Medal";
-//             else if(i == n - 1) it->second = "Silver Medal";
-//             else if(i == n - 2) it->second = "Bronze Medal";
-//             else it->second = to_string(n - i + 1);
-//             i--;
-//         }
-//         vector<string> ans;
-//         for(int it : score) {
-//             ans.push_back(a[it]);
-//         }
-//         return ans;
-//     }
-// };
