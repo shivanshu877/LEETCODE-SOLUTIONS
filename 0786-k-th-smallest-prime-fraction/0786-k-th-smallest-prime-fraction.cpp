@@ -1,24 +1,20 @@
 class Solution {
 public:
     vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
-        vector<int> ans;
-        int n =  arr.size();
-priority_queue<pair<double, pair<int, int>>> pq;
-        for( int i = 0 ; i< n ; i++) {
-            for(  int j = 0 ; j < n ; j++) {
-                if(i != j ){
-                    pq.push({ double( double(arr[i])/ double(arr[j]) )  , {i , j}});
-                    if(pq.size() > k ){
-                        pq.pop();
-                    }
-                }
-            }
-        }
+        priority_queue<pair<double, pair<int, int>>> pq;
+
+        for (int i = 0; i < arr.size(); i++)
+            pq.push({-1.0 * arr[i] / arr.back(), {i, arr.size() - 1}});
       
-            // cout<< pq.top().first << " " << pq.top().second.first << " "<<pq.top().second.second << endl;
-       ans.push_back(arr[pq.top().second.first]);
-       ans.push_back(arr[pq.top().second.second]);
-        
-        return ans;
+        while (--k > 0) {
+            pair<int, int> cur = pq.top().second;
+            pq.pop();
+            cur.second--;
+            pq.push({-1.0 * arr[cur.first] / arr[cur.second], 
+                    {cur.first, cur.second}});
+        }
+       
+        pair<int, int> result = pq.top().second;
+        return {arr[result.first], arr[result.second]};
     }
 };
