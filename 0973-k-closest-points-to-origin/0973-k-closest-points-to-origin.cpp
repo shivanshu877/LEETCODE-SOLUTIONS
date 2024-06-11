@@ -1,21 +1,28 @@
+#include <vector>
+#include <queue>
+#include <cmath>
+
+using namespace std;
+
 class Solution {
 public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        map<double , vector<int> > ans;
-        vector<vector<int>> anss;
-        for( int i  = 0 ; i < points.size() ;i++) {
-            auto it = points[i];
-            double temp = (double)sqrt(  (it[0] * it[0])  +  (it[1] * it[1] )   );
-            ans[temp].push_back(i)  ;
-        }
-        for(auto it : ans){
-            if(!k)break;
-            for(int i = 0 ; i < it.second.size() ;i++){
-                anss.push_back(points[it.second[i]]) ;
-            k--;
+        // Min-heap to store the distances and corresponding points
+        priority_queue<pair<double, vector<int>>, vector<pair<double, vector<int>>>, greater<pair<double, vector<int>>>> pq;
 
-            }
+        // Calculate distances and store them in the heap
+        for (int i = 0; i < points.size(); ++i) {
+            double dist = sqrt(points[i][0] * points[i][0] + points[i][1] * points[i][1]);
+            pq.push({dist, points[i]});
         }
-        return anss;
+
+        // Extract the k closest points
+        vector<vector<int>> result;
+        for (int i = 0; i < k; ++i) {
+            result.push_back(pq.top().second);
+            pq.pop();
+        }
+
+        return result;
     }
 };
