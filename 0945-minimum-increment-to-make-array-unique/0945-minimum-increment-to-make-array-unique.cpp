@@ -1,31 +1,31 @@
 class Solution {
 public:
     int minIncrementForUnique(vector<int>& nums) {
-        int max_ele = 1000001;
-        
-        vector<int> ans( max_ele + 1 , 0) ;
-        for(auto it : nums){
-        ans[it]++;
+        int n = nums.size();
+        int max_val = 0;
+        int minIncrements = 0;
+
+        for (int val : nums) {
+            max_val = max(max_val, val);
         }
-        int right = 0 ;
-        int a = 0 ;
-    
-        cout << endl;
-        for(right = 0 ; right <= max_ele; right++) {
-            if(ans[right] > 1 ){
-                 int temp = right + 1;
-                  int left = ans[right] - 1 ;
-                while(left && temp <= max_ele ){
-                     if(ans[temp] == 0 ){
-                      left--;
-                      ans[temp] = -1 ;
-                      a += (temp - right) ;
-                     }
-                         
-                temp++;
-                }
-            }
+
+        vector<int> frequencyCount(n + max_val + 1, 0);
+
+
+        for (int val : nums) {
+            frequencyCount[val]++;
         }
-        return a ;
+
+        for (int i = 0; i < frequencyCount.size(); i++) {
+            if (frequencyCount[i] <= 1) continue;
+
+  
+            int duplicates = frequencyCount[i] - 1;
+            frequencyCount[i + 1] += duplicates;
+            frequencyCount[i] = 1;
+            minIncrements += duplicates;
+        }
+
+        return minIncrements;
     }
 };
