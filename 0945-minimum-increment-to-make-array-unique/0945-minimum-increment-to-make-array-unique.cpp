@@ -10,8 +10,6 @@ public:
         }
 
         vector<int> frequencyCount(n + max_val + 1, 0);
-
-
         for (int val : nums) {
             frequencyCount[val]++;
         }
@@ -21,8 +19,8 @@ public:
 
   
             int duplicates = frequencyCount[i] - 1;
+            
             frequencyCount[i + 1] += duplicates;
-            frequencyCount[i] = 1;
             minIncrements += duplicates;
         }
 
